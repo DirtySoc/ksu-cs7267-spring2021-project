@@ -1,0 +1,5 @@
+data/*
+vgg_*
+.vscode
+checkpoint
+out.png
