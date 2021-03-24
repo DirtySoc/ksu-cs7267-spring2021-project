@@ -32,17 +32,17 @@ model = vgg_unet(n_classes=n_classes, input_height=416, input_width=608)
 model.train(
     train_images="./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/",
     train_annotations="./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/",
-    checkpoints_path="vgg_unet",
+    checkpoints_path="tmp/vgg_unet",
     epochs=epochs
     )
 
 # %% Explore Results
-
-input_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/001.jpg"
+image = "004"
+input_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/" + image + ".jpg"
 start = time.time()
 out = model.predict_segmentation(
     inp=input_image,
-    out_fname="out.png"
+    out_fname="tmp/out.png"
 )
 done = time.time()
 
@@ -50,16 +50,16 @@ fig, axs = plt.subplots(1, 3, figsize=(20, 20), constrained_layout=True)
 
 img_orig = Image.open(input_image)
 axs[0].imshow(img_orig)
-axs[0].set_title('original image-001.jpg')
+axs[0].set_title('original image-' + image)
 axs[0].grid(False)
 
 axs[1].imshow(out)
 axs[1].set_title('prediction image-out.png')
 axs[1].grid(False)
 
-validation_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/001.png"
+validation_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/" + image + ".png"
 axs[2].imshow( Image.open(validation_image))
-axs[2].set_title('true label image-001.png')
+axs[2].set_title('true label image-' + image)
 axs[2].grid(False)
 
 elapsed = done - start
