@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import time
 
 # %% View dataset image
-original_image = "../data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/001.jpg"
-label_image_semantic = "../data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/001.png"
+original_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/001.jpg"
+label_image_semantic = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/001.png"
 
 fig, axs = plt.subplots(1, 2, figsize=(16, 8), constrained_layout=True)
 
@@ -24,15 +24,15 @@ axs[1].grid(False)
 # Models can be found at https://github.com/divamgupta/image-segmentation-keras.
 from keras_segmentation.models.unet import vgg_unet
 
-epochs = 5
+epochs = 1
 n_classes = 23
 model = vgg_unet(n_classes=n_classes, input_height=416, input_width=608)
 
 # %% Train model. Rerun to continue trainig for 5 more epochs.
 model.train(
-    train_images="../data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/",
-    train_annotations="../data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/",
-    checkpoints_path="checkpoints/aerialSemSegDroneDataset/vgg_unet",
+    train_images="./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/",
+    train_annotations="./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/",
+    checkpoints_path="./checkpoints/aerialSemSegDroneDataset/vgg_unet",
     epochs=epochs,
     verify_dataset=False
     )
