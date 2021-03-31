@@ -2,6 +2,6 @@ data/aerialSemSegDroneDataset
 data/iSAID_patches
 vgg_*
 .vscode
-checkpoint
+checkpoints
 out.png
 tmp
