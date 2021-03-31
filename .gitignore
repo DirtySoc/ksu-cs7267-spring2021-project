@@ -1,6 +1,5 @@
 data/aerialSemSegDroneDataset
 data/iSAID_patches
-vgg_*
 .vscode
 checkpoints
 out.png
