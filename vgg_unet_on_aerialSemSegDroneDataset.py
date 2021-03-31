@@ -38,32 +38,40 @@ model.train(
     )
 
 # %% Explore Results
-image = "004"
-input_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/" + image + ".jpg"
-start = time.time()
-out = model.predict_segmentation(
-    inp=input_image,
-    out_fname="tmp/out.png"
-)
-done = time.time()
+def generate_prediction(img):
+    input_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/" + img + ".jpg"
+    start = time.time()
+    out = model.predict_segmentation(
+        inp=input_image,
+        out_fname="tmp/out.png"
+    )
+    done = time.time()
 
-fig, axs = plt.subplots(1, 3, figsize=(20, 20), constrained_layout=True)
+    fig, axs = plt.subplots(1, 3, figsize=(20, 20), constrained_layout=True)
 
-img_orig = Image.open(input_image)
-axs[0].imshow(img_orig)
-axs[0].set_title('original image-' + image)
-axs[0].grid(False)
+    img_orig = Image.open(input_image)
+    axs[0].imshow(img_orig)
+    axs[0].set_title('original image-' + img)
+    axs[0].grid(False)
 
-axs[1].imshow(out)
-axs[1].set_title('prediction image-out.png')
-axs[1].grid(False)
+    axs[1].imshow(out)
+    axs[1].set_title('prediction image-out.png')
+    axs[1].grid(False)
 
-validation_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/" + image + ".png"
-axs[2].imshow( Image.open(validation_image))
-axs[2].set_title('true label image-' + image)
-axs[2].grid(False)
+    validation_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/" + img + ".png"
+    axs[2].imshow( Image.open(validation_image))
+    axs[2].set_title('true label image-' + img)
+    axs[2].grid(False)
 
-elapsed = done - start
-print(elapsed)
+    elapsed = done - start
+    print(elapsed)
+
+# %%
+generate_prediction("004")
+generate_prediction("005")
+generate_prediction("006")
 
 # %% Evaluation Metrics
+inp_images_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/'
+annotations_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/'
+print(model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir ) )
