@@ -9,7 +9,9 @@ import matplotlib.pyplot as plt
 import glob
 import os
 
-# %% 
+# %% Create directories and copy images to them.
+
+print("Copying images to their own directories...")
 
 # Define directories
 source_image_dir = '../data/iSAID_patches/train/images'
