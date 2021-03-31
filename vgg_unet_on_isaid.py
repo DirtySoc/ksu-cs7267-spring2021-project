@@ -48,10 +48,10 @@ model.train(
 start = time.time()
 
 input_image = "./data/iSAID_patches/train/rgb_source_images/P0000_600_1400_2400_3200.png"
-# out = model.predict_segmentation(
-#     inp=input_image,
-#     out_fname="out.png"
-# )
+out = model.predict_segmentation(
+    inp=input_image,
+    out_fname="out.png"
+)
 done = time.time()
 
 fig, axs = plt.subplots(1, 3, figsize=(20, 20), constrained_layout=True)
