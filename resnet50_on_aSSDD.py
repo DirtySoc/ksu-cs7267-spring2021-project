@@ -22,17 +22,17 @@ axs[1].imshow(label_image_semantic)
 axs[1].grid(False)
 # %% Build model.
 # Models can be found at https://github.com/divamgupta/image-segmentation-keras.
-from keras_segmentation.models.unet import vgg_unet
+from keras_segmentation.models.unet import resnet50_unet
 
-epochs = 1
+epochs = 100
 n_classes = 23
-model = vgg_unet(n_classes=n_classes, input_height=416, input_width=608)
+model = resnet50_unet(n_classes=n_classes, input_height=416, input_width=608)
 
 # %% Train model. Rerun to continue trainig for 5 more epochs.
 model.train(
     train_images="./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/",
     train_annotations="./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/",
-    checkpoints_path="./checkpoints/aerialSemSegDroneDataset/vgg_unet",
+    checkpoints_path="./checkpoints/aerialSemSegDroneDataset/resnet50_unet/ckpt",
     epochs=epochs,
     verify_dataset=False
     )
@@ -75,3 +75,31 @@ generate_prediction("006")
 inp_images_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/'
 annotations_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/'
 print(model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir ) )
+
+# %% Look at history of training
+history = model.history
+print(history.history)
+
+# %% Plot Accuracy over epoch
+plt.plot(history.history['accuracy'],  label='Train Accuracy')
+plt.title('ResNet50 Unet Accuracy')
+plt.ylabel('Acc')
+plt.xlabel('Epoch')
+plt.legend(loc='lower right')
+plt.show()
+
+# %% Plot Loss over epoch
+plt.plot(history.history['loss'],  label='Train Loss')
+plt.title('ResNet50 Unet Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(loc='upper right')
+plt.show()
+
+# %% Save Training History Metrics
+import json
+
+with open("figures/resnet50_train_metrics.json", "w") as outfile:
+    json.dump(history.history, outfile)
+
+# %%
