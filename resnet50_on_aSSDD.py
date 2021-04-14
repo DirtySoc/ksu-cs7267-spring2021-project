@@ -74,7 +74,8 @@ generate_prediction("006")
 # %% Evaluation Metrics
 inp_images_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/'
 annotations_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/'
-print(model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir ) )
+evaluation = model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir )
+print(evaluation)
 
 # %% Look at history of training
 history = model.history
@@ -96,10 +97,13 @@ plt.xlabel('Epoch')
 plt.legend(loc='upper right')
 plt.show()
 
-# %% Save Training History Metrics
+# %% Save Data
 import json
 
 with open("figures/resnet50_train_metrics.json", "w") as outfile:
     json.dump(history.history, outfile)
 
+with open("figures/resnet50_test_eval.json", "w") as outfile:
+    json.dump(history.history, outfile)
+    
 # %%

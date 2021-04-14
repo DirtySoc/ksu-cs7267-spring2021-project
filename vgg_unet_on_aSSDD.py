@@ -74,7 +74,8 @@ generate_prediction("006")
 # %% Evaluation Metrics
 inp_images_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/'
 annotations_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/'
-print(model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir ) )
+evaluation = model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir )
+print(evaluation)
 
 # %% Look at history of training
 history = model.history
@@ -100,4 +101,7 @@ plt.show()
 import json
 
 with open("figures/vgg16_train_metrics.json", "w") as outfile:
+    json.dump(history.history, outfile)
+
+with open("figures/vgg16_test_eval.json", "w") as outfile:
     json.dump(history.history, outfile)
