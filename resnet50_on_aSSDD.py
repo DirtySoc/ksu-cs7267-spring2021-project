@@ -6,6 +6,7 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 import time
+import json
 
 # %% View dataset image
 original_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/001.jpg"
@@ -17,7 +18,6 @@ axs[0].imshow( Image.open(original_image))
 axs[0].grid(False)
 
 label_image_semantic = Image.open(label_image_semantic)
-# label_image_semantic = np.asarray(label_image_semantic)
 axs[1].imshow(label_image_semantic)
 axs[1].grid(False)
 # %% Build model.
@@ -37,7 +37,11 @@ model.train(
     verify_dataset=False
     )
 
-# %% Explore Results
+history = model.history
+with open("figures/resnet50_train_metrics.json", "w") as outfile:
+    json.dump(history.history, outfile)
+
+# %% Define func to gen predictions
 def generate_prediction(img):
     input_image = "./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/original_images/" + img + ".jpg"
     start = time.time()
@@ -66,7 +70,7 @@ def generate_prediction(img):
     elapsed = done - start
     print(elapsed)
 
-# %%
+# %% Explore Results
 generate_prediction("004")
 generate_prediction("005")
 generate_prediction("006")
@@ -76,10 +80,10 @@ inp_images_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/o
 annotations_dir='./data/aerialSemSegDroneDataset/dataset/semantic_drone_dataset/label_images_semantic/'
 evaluation = model.evaluate_segmentation( inp_images_dir=inp_images_dir  , annotations_dir=annotations_dir )
 print(evaluation)
+evaluation['class_wise_IU'] = evaluation['class_wise_IU'].tolist()
 
-# %% Look at history of training
-history = model.history
-print(history.history)
+with open("figures/resnet50_test_eval.json", "w") as outfile:
+    json.dump(evaluation, outfile)
 
 # %% Plot Accuracy over epoch
 plt.plot(history.history['accuracy'],  label='Train Accuracy')
@@ -97,13 +101,4 @@ plt.xlabel('Epoch')
 plt.legend(loc='upper right')
 plt.show()
 
-# %% Save Data
-import json
-
-with open("figures/resnet50_train_metrics.json", "w") as outfile:
-    json.dump(history.history, outfile)
-
-with open("figures/resnet50_test_eval.json", "w") as outfile:
-    json.dump(history.history, outfile)
-    
-# %%
+# %% 
