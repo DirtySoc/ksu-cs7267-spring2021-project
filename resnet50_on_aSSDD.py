@@ -67,6 +67,8 @@ def generate_prediction(img):
     axs[2].set_title('true label image-' + img)
     axs[2].grid(False)
 
+    plt.savefig("figures/resnet50_pred_" + img + ".jpg")
+
     elapsed = done - start
     print(elapsed)
 
@@ -91,7 +93,8 @@ plt.title('ResNet50 Unet Accuracy')
 plt.ylabel('Acc')
 plt.xlabel('Epoch')
 plt.legend(loc='lower right')
-plt.show()
+plt.savefig('figures/resnet50_acc.jpg')
+# plt.show()
 
 # %% Plot Loss over epoch
 plt.plot(history.history['loss'],  label='Train Loss')
@@ -99,6 +102,8 @@ plt.title('ResNet50 Unet Loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(loc='upper right')
-plt.show()
+plt.savefig('figures/resnet50_loss.jpg')
+# plt.show()
 
 # %% 
+# model.evaluate()
